@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class Rating {
 
     @SerializedName("kp")
-    private String kp;
+    private double kp;
 
     @Override
     public String toString() {
@@ -14,11 +14,11 @@ public class Rating {
                 '}';
     }
 
-    public Rating(String rating) {
+    public Rating(double rating) {
         this.kp = rating;
     }
 
-    public String getKp() {
+    public double getKp() {
         return kp;
     }
 }

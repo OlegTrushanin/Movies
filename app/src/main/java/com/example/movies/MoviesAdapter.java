@@ -42,7 +42,7 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
                 .load(movie.getPoster().getUrl())
                 .into(holder.imagePoster);
 
-        String rating = movie.getRating().getKp();
+        double rating = movie.getRating().getKp();
 
         holder.ratingView.setText(String.valueOf(rating));
 
