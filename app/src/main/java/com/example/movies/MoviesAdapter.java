@@ -44,7 +44,7 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
 
         double rating = movie.getRating().getKp();
 
-        holder.ratingView.setText(String.valueOf(rating));
+        holder.ratingView.setText(String.format("%.1f",rating));
 
     }
 
