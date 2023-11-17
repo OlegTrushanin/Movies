@@ -25,6 +25,12 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
 
     List<Movie> movies = new ArrayList<>();
 
+    public void setOnReachAndListener(OnReachAndListener onReachAndListener) {
+        this.onReachAndListener = onReachAndListener;
+    }
+
+    private OnReachAndListener onReachAndListener;
+
     @NonNull
     @Override
     public MoviesVieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -59,7 +65,16 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
 
         holder.ratingView.setBackground(backGround);
 
+        if(position == movies.size()-1&& onReachAndListener != null){
 
+            onReachAndListener.onReachAnd();
+        }
+
+
+    }
+
+    interface OnReachAndListener{ // нужен для колбэка, чтобы подгрузить фильмы когда долистаем в приложении до конца
+        void onReachAnd(); // потом мы этод метод переопределим в MainActivity
     }
 
     @Override

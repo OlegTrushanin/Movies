@@ -50,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        moviesAdapter.setOnReachAndListener(new MoviesAdapter.OnReachAndListener() {
+            @Override
+            public void onReachAnd() {
+                mainViewModel.loadMovies();
+            }
+        });
+
 
 
 

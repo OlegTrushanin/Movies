@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -33,6 +34,8 @@ public class MainViewModel extends AndroidViewModel {
 
 
 
+
+
     public MainViewModel(@NonNull Application application) {
         super(application);
     }
@@ -45,8 +48,16 @@ public class MainViewModel extends AndroidViewModel {
                 .subscribe(new Consumer<MoviesRespont>() {
                     @Override
                     public void accept(MoviesRespont moviesRespont) throws Throwable {
+                        List<Movie> loadedMovies = movies.getValue();
+                        if (loadedMovies != null) {
+                            loadedMovies.addAll(moviesRespont.getMovies());
+                            movies.setValue(loadedMovies);
 
-                        movies.setValue(moviesRespont.getMovies()); // присваиваем значения
+                        } else {
+                            movies.setValue(moviesRespont.getMovies()); // присваиваем значения
+
+                        }
+
                         page++;
                     }
                 }, new Consumer<Throwable>() {
@@ -63,6 +74,8 @@ public class MainViewModel extends AndroidViewModel {
 
         return ApiFactory.apiService.loadMovies(page);
     }
+
+
 
     @Override
     protected void onCleared() {
