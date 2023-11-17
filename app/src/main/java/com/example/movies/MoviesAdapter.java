@@ -1,5 +1,7 @@
 package com.example.movies;
 
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +26,12 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
 
     List<Movie> movies = new ArrayList<>();
 
+    public void setOnReachAndListener(OnReachAndListener onReachAndListener) {
+        this.onReachAndListener = onReachAndListener;
+    }
+
+    private OnReachAndListener onReachAndListener;
+
     @NonNull
     @Override
     public MoviesVieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,15 +46,39 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
 
     @Override
     public void onBindViewHolder(@NonNull MoviesVieHolder holder, int position) {
+
+        Log.d("MoviesAdapter", "onBindViewHolder" + position);
+
         Movie movie = movies.get(position);
         Glide.with(holder.itemView)
                 .load(movie.getPoster().getUrl())
                 .into(holder.imagePoster);
 
-        String rating = movie.getRating().getKp();
+        double rating = movie.getRating().getKp();
+        holder.ratingView.setText(String.format("%.1f",rating));
+        int backGroundId;
+        if(rating>7){
+            backGroundId = R.drawable.circle_green;
+        }else if(rating>5){
+            backGroundId = R.drawable.circle_orange;
+        }else{
+            backGroundId = R.drawable.circle_red;
+        }
 
-        holder.ratingView.setText(String.valueOf(rating));
+        Drawable backGround = ContextCompat.getDrawable(holder.itemView.getContext(), backGroundId);
 
+        holder.ratingView.setBackground(backGround);
+
+        if(position >= movies.size()-10&& onReachAndListener != null){
+
+            onReachAndListener.onReachAnd();
+        }
+
+
+    }
+
+    interface OnReachAndListener{ // нужен для колбэка, чтобы подгрузить фильмы когда долистаем в приложении до конца
+        void onReachAnd(); // потом мы этод метод переопределим в MainActivity
     }
 
     @Override

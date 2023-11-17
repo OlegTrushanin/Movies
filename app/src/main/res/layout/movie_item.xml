@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
+            android:minHeight="250dp"
             android:adjustViewBounds="true"
             tools:src="@tools:sample/avatars"
             android:contentDescription="@null"/>
@@ -31,9 +32,9 @@
             android:layout_marginEnd="15dp"
             android:text="0.0"
             android:textSize="18sp"
-            android:background="#39BF24"
+            tools:background="@drawable/circle_green"
             android:textColor="@android:color/white"
-            android:padding="10dp"/>
+            />
 
 
 

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     MoviesAdapter moviesAdapter;
 
     RecyclerView recyclerViewMovies;
+
+    ProgressBar progressBar;
     private static final String TEG = "MainActivity";
 
     @Override
@@ -33,13 +37,26 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
 
+        progressBar = findViewById(R.id.progressBar);
+
         recyclerViewMovies.setAdapter(moviesAdapter);
 
         recyclerViewMovies.setLayoutManager(new GridLayoutManager(this,2)); // тип представления ресайклер вью. 2 колонки
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        mainViewModel.loadMovies();
+        //mainViewModel.loadMovies(); убираем во вью модель, чтобы не терять состаяние страницы при перевороте
+
+        mainViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if(aBoolean){
+                    progressBar.setVisibility(View.VISIBLE);
+                }else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
 
         mainViewModel.getMovies().observe(this, new Observer<List<Movie>>() {
             @Override
@@ -47,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
 
                 moviesAdapter.setMovies(movies);
 
+            }
+        });
+
+        moviesAdapter.setOnReachAndListener(new MoviesAdapter.OnReachAndListener() {
+            @Override
+            public void onReachAnd() {
+                mainViewModel.loadMovies();
             }
         });
 
