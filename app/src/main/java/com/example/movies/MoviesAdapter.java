@@ -30,7 +30,15 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
         this.onReachAndListener = onReachAndListener;
     }
 
+    public void setOnClickItemListener(OnClickItemListener onClickItemListener) {
+        this.onClickItemListener = onClickItemListener;
+    }
+
     private OnReachAndListener onReachAndListener;
+
+
+
+    private OnClickItemListener onClickItemListener;
 
     @NonNull
     @Override
@@ -74,11 +82,24 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
             onReachAndListener.onReachAnd();
         }
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() { // вешаем слушателя клика
+            @Override
+            public void onClick(View view) {
+                if(onClickItemListener != null) {
+                    onClickItemListener.onClickItem(movie);
+                }
+            }
+        });
+
 
     }
 
     interface OnReachAndListener{ // нужен для колбэка, чтобы подгрузить фильмы когда долистаем в приложении до конца
         void onReachAnd(); // потом мы этод метод переопределим в MainActivity
+    }
+
+    interface OnClickItemListener{
+       void onClickItem(Movie movie);
     }
 
     @Override

@@ -2,7 +2,9 @@ package com.example.movies;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Movie {
+import java.io.Serializable;
+
+public class Movie implements Serializable { // implements Serializable - нужен для перевода класса в поток байтов, чтобы мы могли объект Movie передать в Intent
 
     @SerializedName("id") // сохраняем значения для переменных. Нужно для обфускации
     private int id;
