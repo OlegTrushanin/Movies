@@ -50,7 +50,7 @@ public class MovieDetailViewModel extends AndroidViewModel {
                     }
                 });
 
-       compositeDisposable.add(disposable)
+       compositeDisposable.add(disposable);
 
 
 
