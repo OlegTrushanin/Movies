@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class MovieDetailActivity extends AppCompatActivity {
 
     private ImageView imageViewPoster;
@@ -39,6 +43,25 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewTitle.setText(movie.getName());
         textViewYear.setText(String.valueOf(movie.getYear()));
         textDescription.setText(movie.getDescription());
+
+        ApiFactory.apiService.loadTrailers(movie.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<TrailersRespont>() {
+                    @Override
+                    public void accept(TrailersRespont trailersRespont) throws Throwable {
+
+                        Log.d("MovieDetailActivity1", trailersRespont.toString());
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+
+                        Log.d("MovieDetailActivity1", "Error");
+
+                    }
+                });
 
     }
 
