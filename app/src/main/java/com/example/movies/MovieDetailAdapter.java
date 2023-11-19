@@ -23,6 +23,12 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
 
     private List<Trailer> trailerList = new ArrayList<>();
 
+    public void setOnKlick(OnKlickItemListener onKlick) {
+        this.onKlick = onKlick;
+    }
+
+    private OnKlickItemListener onKlick;
+
 
 
     @NonNull
@@ -47,6 +53,15 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
 
         holder.trailerView.setText(trailer.getName());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onKlick != null) {
+                    onKlick.onKlickItemListener(trailer);
+                }
+            }
+        });
+
 
 
 
@@ -56,6 +71,12 @@ public class MovieDetailAdapter extends RecyclerView.Adapter<MovieDetailAdapter.
     @Override
     public int getItemCount() {
         return trailerList.size();
+    }
+
+    interface OnKlickItemListener{
+
+       void onKlickItemListener(Trailer trailer);
+
     }
 
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -35,7 +36,13 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     MovieDetailAdapter movieDetailAdapter;
 
+    ReviewAdapter reviewAdapter;
+
     RecyclerView recyclerViewTrailer;
+
+    RecyclerView recyclerViewReview;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +52,17 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         movieDetailAdapter = new MovieDetailAdapter();
 
+        reviewAdapter = new ReviewAdapter();
+
         recyclerViewTrailer.setAdapter(movieDetailAdapter);
+
+        recyclerViewReview.setAdapter(reviewAdapter);
 
         //recyclerViewTrailer.setLayoutManager(new GridLayoutManager(this,1));
 
         recyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerViewReview.setLayoutManager(new LinearLayoutManager(this));
 
 
         movieDetailViewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
@@ -69,11 +82,36 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         movieDetailViewModel.loadTrailers(movie.getId());
 
+        movieDetailViewModel.loadReviews(movie.getId());
+
         movieDetailViewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
             public void onChanged(List<Trailer> trailers) {
                // Log.d("MovieDetailActivity1", trailers.toString());
                 movieDetailAdapter.setTrailerList(trailers);
+            }
+        });
+
+        movieDetailViewModel.getReviews().observe(this, new Observer<List<Review>>() {
+            @Override
+            public void onChanged(List<Review> reviews) {
+                reviewAdapter.setReviewList(reviews);
+            }
+        });
+
+        movieDetailAdapter.setOnKlick(new MovieDetailAdapter.OnKlickItemListener() {
+            @Override
+            public void onKlickItemListener(Trailer trailer) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(trailer.getUrl()));
+                startActivity(intent);
+            }
+        });
+
+        reviewAdapter.setOnReachAndList(new ReviewAdapter.OnReachAndList() {
+            @Override
+            public void onReachAndList() {
+                movieDetailViewModel.loadReviews(movie.getId());
             }
         });
 
@@ -88,6 +126,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewYear = findViewById(R.id.textViewYear);
         textDescription = findViewById(R.id.textDescription);
         recyclerViewTrailer = findViewById(R.id.recyclerViewTrailer);
+        recyclerViewReview = findViewById(R.id.recyclerViewReview);
+
     }
 
     public static Intent newIntent(Context context, Movie movie){
@@ -95,6 +135,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_MOVIE, movie);
         return intent;
     }
+
+
+
 
 
 }

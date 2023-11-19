@@ -56,26 +56,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textDescription"
             android:layout_marginTop="16dp"/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:nestedScrollingEnabled="true"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewTrailer"
+            tools:layout_editor_absoluteX="33dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
