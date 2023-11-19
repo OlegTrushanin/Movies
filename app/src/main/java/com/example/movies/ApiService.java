@@ -17,6 +17,6 @@ public interface ApiService {
 //    @GET("review?token=1AAP9ZP-2BD4ECK-QMNTWRZ-SMA0V61&rating.kp&limit=10&selectFields=review&selectFields=author&movieId={movieId}&type=Негативный&type=Нейтральный&type=Позитивный")
 //    Single<ReviewsList> loadReview(@Query("page") int page, @Path("movieId") int idFilm);
 
-    @GET("review?token=1AAP9ZP-2BD4ECK-QMNTWRZ-SMA0V61&rating.kp&limit=10&selectFields=review&selectFields=author&type=Негативный&type=Нейтральный&type=Позитивный")
+    @GET("review?token=1AAP9ZP-2BD4ECK-QMNTWRZ-SMA0V61&rating.kp&limit=10")
     Single<ReviewsList> loadReview(@Query("page") int page, @Query("movieId") int idFilm);
 }

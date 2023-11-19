@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardViewReview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="#BBDD5A"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/linearLayoutReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:alpha="0.8"
+        android:background="@android:color/holo_green_light">
 
         <TextView
             android:id="@+id/textViewAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="author"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
             android:textSize="16sp"/>
 
         <TextView
@@ -26,8 +31,10 @@
             android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
             android:text="Review Review Review"
-            android:textSize="12sp"/>
+            android:textStyle="bold"
+            android:textSize="16sp"/>
 
 
 

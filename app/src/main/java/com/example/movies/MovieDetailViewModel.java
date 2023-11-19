@@ -1,6 +1,7 @@
 package com.example.movies;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -74,26 +75,27 @@ public class MovieDetailViewModel extends AndroidViewModel {
     }
 
     void loadReviews(int movieId){
-        Boolean loading = isLoading.getValue();
-        if(loading!=null && loading){
-            return;
-        }
+
+//        Boolean loading = isLoading.getValue();
+//        if(loading!=null && loading){
+//            return;
+//        }
 
         Disposable disposable1 = ApiFactory.apiService.loadReview(page, movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Throwable {
-                        isLoading.setValue(true);
-                    }
-                })
-                .doAfterTerminate(new Action() {
-                    @Override
-                    public void run() throws Throwable {
-                        isLoading.setValue(false);
-                    }
-                })
+//                .doOnSubscribe(new Consumer<Disposable>() {
+//                    @Override
+//                    public void accept(Disposable disposable) throws Throwable {
+//                        isLoading.setValue(true);
+//                    }
+//                })
+//                .doAfterTerminate(new Action() {
+//                    @Override
+//                    public void run() throws Throwable {
+//                        isLoading.setValue(false);
+//                    }
+//                })
                 .subscribe(new Consumer<ReviewsList>() {
                     @Override
                     public void accept(ReviewsList reviewsList) throws Throwable {
@@ -105,6 +107,7 @@ public class MovieDetailViewModel extends AndroidViewModel {
                         }else {
                             reviews.setValue(reviewsList.getReviews());
                         }
+                       // page++;
 
                     }
                 }, new Consumer<Throwable>() {
@@ -113,7 +116,10 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
                     }
                 });
-        ++page;
+
+
+
+
 
         compositeDisposable.add(disposable1);
 
