@@ -4,36 +4,40 @@
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@android:color/holo_purple"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/trailerView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Trailer"
-            app:layout_constraintTop_toTopOf="parent"
             android:textColor="@android:color/white"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@android:color/holo_purple"
             android:textSize="16sp"
-            android:padding="8dp"
-            android:gravity="center"/>
+           />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_media_play" />
 
 
-
-
-
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+    </LinearLayout>
 
 
 

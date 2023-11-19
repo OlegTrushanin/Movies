@@ -3,6 +3,9 @@ package com.example.movies;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,11 +33,24 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     MovieDetailViewModel movieDetailViewModel;
 
+    MovieDetailAdapter movieDetailAdapter;
+
+    RecyclerView recyclerViewTrailer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
         initViews();
+
+        movieDetailAdapter = new MovieDetailAdapter();
+
+        recyclerViewTrailer.setAdapter(movieDetailAdapter);
+
+        //recyclerViewTrailer.setLayoutManager(new GridLayoutManager(this,1));
+
+        recyclerViewTrailer.setLayoutManager(new LinearLayoutManager(this));
+
 
         movieDetailViewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
 
@@ -56,7 +72,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieDetailViewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
             public void onChanged(List<Trailer> trailers) {
-                Log.d("MovieDetailActivity1", trailers.toString());
+               // Log.d("MovieDetailActivity1", trailers.toString());
+                movieDetailAdapter.setTrailerList(trailers);
             }
         });
 
@@ -70,6 +87,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewTitle = findViewById(R.id.textViewTitle);
         textViewYear = findViewById(R.id.textViewYear);
         textDescription = findViewById(R.id.textDescription);
+        recyclerViewTrailer = findViewById(R.id.recyclerViewTrailer);
     }
 
     public static Intent newIntent(Context context, Movie movie){
