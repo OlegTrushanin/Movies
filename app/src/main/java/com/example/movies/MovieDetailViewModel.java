@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MovieDetailViewModel extends AndroidViewModel {
@@ -35,12 +36,18 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
        Disposable disposable = ApiFactory.apiService.loadTrailers(id)
                 .subscribeOn(Schedulers.io())
+               .map(new Function<TrailersRespont, List<Trailer>>() {// используется чтобы изменить тип данных получаемых методом accept в subscribe
+                   @Override
+                   public List<Trailer> apply(TrailersRespont trailersRespont) throws Throwable {
+                       return trailersRespont.getMovieTrailer().getTrailers();
+                   }
+               })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<TrailersRespont>() {
+                .subscribe(new Consumer<List<Trailer>>() {
                     @Override
-                    public void accept(TrailersRespont trailersRespont) throws Throwable {
+                    public void accept(List<Trailer> trailerList) throws Throwable {
 
-                        trailers.setValue(trailersRespont.getMovieTrailer().getTrailers());
+                        trailers.setValue(trailerList);
 
                     }
                 }, new Consumer<Throwable>() {

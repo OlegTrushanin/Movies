@@ -1,6 +1,8 @@
 package com.example.movies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -24,12 +28,15 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "movie";
 
+    MovieDetailViewModel movieDetailViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
         initViews();
 
+        movieDetailViewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
 
 
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE); // получаем объет из интента
@@ -44,24 +51,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewYear.setText(String.valueOf(movie.getYear()));
         textDescription.setText(movie.getDescription());
 
-        ApiFactory.apiService.loadTrailers(movie.getId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<TrailersRespont>() {
-                    @Override
-                    public void accept(TrailersRespont trailersRespont) throws Throwable {
+        movieDetailViewModel.loadTrailers(movie.getId());
 
-                        Log.d("MovieDetailActivity1", trailersRespont.toString());
+        movieDetailViewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
+            @Override
+            public void onChanged(List<Trailer> trailers) {
+                Log.d("MovieDetailActivity1", trailers.toString());
+            }
+        });
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Throwable {
 
-                        Log.d("MovieDetailActivity1", "Error");
 
-                    }
-                });
 
     }
 
