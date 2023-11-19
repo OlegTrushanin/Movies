@@ -22,6 +22,7 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
     public MovieDetailViewModel(@NonNull Application application) {
         super(application);
+        movieDao = DataBase.getInstance(application).movieDao();
     }
 
     public LiveData<List<Trailer>> getTrailers() {
@@ -38,6 +39,12 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
     public LiveData<List<Review>> getReviews() {
         return reviews;
+    }
+
+    MovieDao movieDao;
+
+    public LiveData<Movie> getFavoriteMovie(int movieId){
+         return movieDao.getFavoriteMovie(movieId);
     }
 
     int page = 1;
@@ -126,6 +133,24 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
 
     }
+
+    public void insertMovie(Movie movie){
+        Disposable disposable = movieDao.insertMovie(movie)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
+        compositeDisposable.add(disposable);
+    }
+
+    public void deleteMovie(int movieId){
+        Disposable disposable = movieDao.deleteMovie(movieId)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
+        compositeDisposable.add(disposable);
+    }
+
+
 
     @Override
     protected void onCleared() {

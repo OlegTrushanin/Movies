@@ -1,11 +1,17 @@
 package com.example.movies;
 
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@Entity(tableName = "favorite_movies") //назване таблицы
 public class Movie implements Serializable { // implements Serializable - нужен для перевода класса в поток байтов, чтобы мы могли объект Movie передать в Intent
 
+    @PrimaryKey // указываем что это будет id для базы
     @SerializedName("id") // сохраняем значения для переменных. Нужно для обфускации
     private int id;
     @SerializedName("name")
@@ -14,8 +20,12 @@ public class Movie implements Serializable { // implements Serializable - нуж
     private String description;
     @SerializedName("year")
     private int year;
+
+    @Embedded // нужно чтобы в базу можно было записать объекты
     @SerializedName("poster")
     private Poster poster;
+
+    @Embedded // нужно чтобы в базу можно было записать объекты
     @SerializedName("rating")
     private Rating rating;
 

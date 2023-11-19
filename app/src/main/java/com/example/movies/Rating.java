@@ -6,6 +6,10 @@ import java.io.Serializable;
 
 public class Rating implements Serializable {
 
+    public void setKp(double kp) {
+        this.kp = kp;
+    }
+
     @SerializedName("kp")
     private double kp;
 
@@ -18,6 +22,10 @@ public class Rating implements Serializable {
 
     public Rating(double rating) {
         this.kp = rating;
+    }
+
+    public Rating() {
+
     }
 
     public double getKp() {

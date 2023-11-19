@@ -6,6 +6,10 @@ import java.io.Serializable;
 
 public class Poster implements Serializable {
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @SerializedName("url")
     private String url;
 
@@ -18,6 +22,10 @@ public class Poster implements Serializable {
 
     public Poster(String url) {
         this.url = url;
+    }
+
+    public Poster() {
+
     }
 
     public String getUrl() {
