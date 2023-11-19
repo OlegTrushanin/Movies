@@ -12,6 +12,7 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -31,6 +32,8 @@ public class MovieDetailViewModel extends AndroidViewModel {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private MutableLiveData<List<Review>> reviews = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
 
     public LiveData<List<Review>> getReviews() {
         return reviews;
@@ -71,10 +74,26 @@ public class MovieDetailViewModel extends AndroidViewModel {
     }
 
     void loadReviews(int movieId){
+        Boolean loading = isLoading.getValue();
+        if(loading!=null && loading){
+            return;
+        }
 
         Disposable disposable1 = ApiFactory.apiService.loadReview(page, movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Throwable {
+                        isLoading.setValue(true);
+                    }
+                })
+                .doAfterTerminate(new Action() {
+                    @Override
+                    public void run() throws Throwable {
+                        isLoading.setValue(false);
+                    }
+                })
                 .subscribe(new Consumer<ReviewsList>() {
                     @Override
                     public void accept(ReviewsList reviewsList) throws Throwable {
@@ -83,11 +102,9 @@ public class MovieDetailViewModel extends AndroidViewModel {
                             allReview.addAll(reviewsList.getReviews());
                             reviews.setValue(allReview);
 
+                        }else {
+                            reviews.setValue(reviewsList.getReviews());
                         }
-
-                        reviews.setValue(reviewsList.getReviews());
-
-
 
                     }
                 }, new Consumer<Throwable>() {
