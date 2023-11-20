@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -27,12 +29,16 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerViewMovies;
 
     ProgressBar progressBar;
+
+    FloatingActionButton floatingActionButton;
     private static final String TEG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        floatingActionButton = findViewById(R.id.floatingActionButton);
 
         moviesAdapter = new MoviesAdapter();
 
@@ -80,6 +86,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClickItem(Movie movie) {
                Intent intent = MovieDetailActivity.newIntent(MainActivity.this, movie);
                startActivity(intent);
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = FavoritesActivity.newIntent(MainActivity.this);
+                startActivity(intent);
             }
         });
 
