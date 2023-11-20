@@ -64,6 +64,7 @@ public class MoviesAdapter extends RecyclerView.Adapter <MoviesAdapter.MoviesVie
 
         double rating = movie.getRating().getKp();
         holder.ratingView.setText(String.format("%.1f",rating));
+
         int backGroundId;
         if(rating>7){
             backGroundId = R.drawable.circle_green;
