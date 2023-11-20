@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -61,6 +62,12 @@ public class FavoritesActivity extends AppCompatActivity {
         });
 
 
+
+    }
+
+    public static Intent newIntent(Context context){
+
+        return new Intent(context, FavoritesActivity.class);
 
     }
 

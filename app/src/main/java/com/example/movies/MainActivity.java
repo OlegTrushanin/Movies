@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import androidx.annotation.NonNull;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -85,6 +88,29 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){ // отображает меню в данной активити
+
+        getMenuInflater().inflate(R.menu.menu_favorites, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) { // чтобы вкладки меню реагировали на клики
+
+        if(item.getItemId() == R.id.itemFavorites){
+            Intent intent = FavoritesActivity.newIntent(MainActivity.this);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
 }
